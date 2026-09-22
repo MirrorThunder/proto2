@@ -5,10 +5,13 @@ public class PlayerController : MonoBehaviour
 {
     public InputAction moveAction;
     public Vector2 moveInput;
+
     public float speed = 10.0f;
-    public float xRange = 10.0f;
+
     public GameObject projectilePrefab;
     public InputAction fireAction;
+
+    public GameObject ground;
 
     void Start()
     {
@@ -18,31 +21,47 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Mantiene al Player dentro de los límites laterales.
-        if (transform.position.x < -xRange)
-        {
-            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
-        }
-
-        if (transform.position.x > xRange)
-        {
-            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
-        }
-
-        // Lee el movimiento.
+        // Lee el movimiento
         moveInput = moveAction.ReadValue<Vector2>();
 
-        // A/D = izquierda y derecha
-        // W/S = adelante y atrás
+        // Movimiento en X y Z
         Vector3 movement = new Vector3(
             moveInput.x,
             0,
             moveInput.y
         );
 
-        transform.Translate(movement * Time.deltaTime * speed);
+        // Mueve al personaje usando la velocidad
+        transform.position += movement * speed * Time.deltaTime;
 
-        // Disparar.
+        // Mantiene al personaje dentro del Ground
+        if (ground != null)
+        {
+            Collider groundCollider = ground.GetComponent<Collider>();
+
+            if (groundCollider != null)
+            {
+                Bounds bounds = groundCollider.bounds;
+
+                Vector3 position = transform.position;
+
+                position.x = Mathf.Clamp(
+                    position.x,
+                    bounds.min.x,
+                    bounds.max.x
+                );
+
+                position.z = Mathf.Clamp(
+                    position.z,
+                    bounds.min.z,
+                    bounds.max.z
+                );
+
+                transform.position = position;
+            }
+        }
+
+        // Disparar
         if (fireAction.triggered)
         {
             Instantiate(
