@@ -3,9 +3,13 @@
 ## ¿ACTIVO?: SI
 
 ## En Proceso:
-- **Paso 14/25:** Destruir apenas salga de 'Ground', no antes ni despues
+- **Paso 17/25:**
+	- Se generan sin scripts, y fuera del GameObject 'SpawnManager'
+	- El binding 's/S' para generar Animals no funciona
 
 ## Por Hacer:
+- **Paso 14/25:** Destruir apenas salga de 'Ground', no antes ni despues
+- **Paso 15/25:** Destruir Animals fuera del lim. inf. de 'Ground'
 
 ## Recomendaciones - Realizado
 - **Paso 13/25:** Siempre usar vel. negativa, ya que caminan al contrario
